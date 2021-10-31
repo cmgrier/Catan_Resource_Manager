@@ -1,7 +1,5 @@
-package com.example.catanResourceManager.ui.theme.homepage
+package com.example.catanResourceManager
 
-import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,40 +9,54 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.res.ResourcesCompat
-import com.example.catanResourceManager.R
-import com.example.catanResourceManager.ui.theme.*
+import com.example.catanResourceManager.ui.theme.Primary
+import com.example.catanResourceManager.ui.theme.Secondary
+import com.example.catanResourceManager.ui.theme.Shapes
+import com.example.catanResourceManager.ui.theme.Typography
+import com.example.catanResourceManager.ui.theme.homepage.Resource
+import com.example.catanResourceManager.ui.theme.homepage.ResourceManager
+import com.example.catanResourceManager.ui.theme.homepage.ResourceName
+
+val cardHeight = 90.dp
 
 @Composable
-fun NumberList() {
-    LazyColumn {
-        for (number in numberList) {
-            item {
-                NumberCard(number = number)
+fun ResourceEditor() {
+    val numbers = mutableMapOf<Int, ResourceManager>()
+    var addState = true
+
+    for (i in 2..12) {
+        if (i != 7) {
+            numbers[i] = ResourceManager()
+        }
+    }
+    Box {
+        LazyColumn {
+            for (entry in numbers) {
+                item {
+                    NumberCard(entry.key, entry.value, addState)
+                }
             }
+        }
+        FloatingActionButton(onClick = { addState = !addState }) {
+            Icon(Icons.Filled.Add, "Add State $addState")
         }
     }
 }
 
-val cardHeight = 90.dp
-
 @Preview
 @Composable
-fun NumberCard(number: Int = 0) {
-    val resourceManager = ResourceManager()
+fun NumberCard(number: Int = 0, resourceManager: ResourceManager = ResourceManager(), add: Boolean = false) {
     resourceManager.modifySupply(ResourceName.BRICK, 10)
-    var editState = false
     Card(
         shape = Shapes.medium,
         backgroundColor = Secondary,
@@ -54,15 +66,15 @@ fun NumberCard(number: Int = 0) {
             .padding(4.dp),
     ) {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .wrapContentHeight(Alignment.CenterVertically)
-            ) {
-                NumberHeader(number = number)
-                ResourceListView(resourceManager)
-            }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .wrapContentHeight(Alignment.CenterVertically)
+        ) {
+            NumberHeader(number = number)
+            ResourceListView(resourceManager, add)
         }
+    }
 }
 
 @Composable
@@ -77,9 +89,8 @@ fun NumberHeader(number: Int) {
 }
 
 @Composable
-fun ResourceListView(resourceManager: ResourceManager = ResourceManager()) {
+fun ResourceListView(resourceManager: ResourceManager = ResourceManager(), add: Boolean) {
     var editVisibility by remember { mutableStateOf(false) }
-    resourceManager.resourceMap[ResourceName.WOOL] = 2
     val context = LocalContext.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -93,11 +104,11 @@ fun ResourceListView(resourceManager: ResourceManager = ResourceManager()) {
             modifier = Modifier
                 .wrapContentWidth(align = Alignment.Start)
                 .weight(1f)
-                ) {
-            for (resource in resourceManager.resourceMap.entries) {
+        ) {
+            for (resource in resourceManager.map.entries) {
                 if (resource.value != 0) {
                     item {
-                        ResourceView(resource = Resource(resource.key), number = resource.value)
+                        ResourceView(Resource(resource.key), resourceManager, add)
                     }
                 }
             }
@@ -118,11 +129,15 @@ fun ResourceListView(resourceManager: ResourceManager = ResourceManager()) {
 }
 
 @Composable
-fun ResourceView(resource: Resource, number: Int) {
-    val valueString = if (number > 1) " x $number" else ""
+fun ResourceView(resource: Resource, resourceManager: ResourceManager, add: Boolean) {
     val iconSize = 80.dp
     Box(
-
+        modifier = Modifier.clickable {
+            val currentAmount = resourceManager.map[resource.name]
+            currentAmount?.let {
+                resourceManager.map[resource.name] = if (add) it.inc() else it.dec()
+            }
+        }
     ) {
         Image(
             painter = painterResource(id = R.drawable.brickalpha),
@@ -130,22 +145,15 @@ fun ResourceView(resource: Resource, number: Int) {
             modifier = Modifier.size(iconSize)
         )
         Text(
-            text = number.toString(),
+            text = resourceManager.map[resource.name].toString(),
             textAlign = TextAlign.Center,
-            modifier = Modifier.align(Alignment.TopEnd).width(30.dp).padding(top = 2.dp)
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .width(30.dp)
+                .padding(top = 2.dp)
         )
     }
 }
 
-val numberList = listOf(
-    2,
-    3,
-    4,
-    5,
-    6,
-    8,
-    9,
-    10,
-    11,
-    12
-)
+
+
