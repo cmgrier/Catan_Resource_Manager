@@ -7,19 +7,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.random.Random
 
 class RollManager(private val listenerList: MutableList<RollListener>) {
     var currentRoll = Roll()
 
     fun handleNewRoll(newRoll: Roll) {
         for (listener in listenerList) listener.handleNewRoll(newRoll)
-        currentRoll = newRoll
+        currentRoll.primaryDie.value = newRoll.primaryDie.value
+        currentRoll.secondaryDie.value = newRoll.secondaryDie.value
+        currentRoll.eventDie.value = newRoll.eventDie.value
     }
 }
 
@@ -29,11 +34,16 @@ interface RollListener {
 }
 
 class Roll(
-    val primaryDie: Int = 0,
-    val secondaryDie: Int = 0,
-    val eventDie: EventDieResult = EventDieResult.BARBARIAN
+    val primaryDie: MutableState<Int> = mutableStateOf(0),
+    val secondaryDie: MutableState<Int> = mutableStateOf(0),
+    val eventDie: MutableState<EventDieResult> = mutableStateOf(EventDieResult.BARBARIAN)
 ) {
-
+    fun randomize(): Roll {
+        primaryDie.value = Random.nextInt(5)
+        secondaryDie.value = Random.nextInt(5)
+        eventDie.value = EventDieResult.values()[Random.nextInt(EventDieResult.values().size)]
+        return this
+    }
 }
 
 enum class EventDieResult() {
@@ -51,7 +61,7 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = rollManager.currentRoll.primaryDie.toString(),
+            text = rollManager.currentRoll.primaryDie.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(4.dp)
@@ -61,7 +71,7 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
                 .height(diceLength)
         )
         Text(
-            text = rollManager.currentRoll.secondaryDie.toString(),
+            text = rollManager.currentRoll.secondaryDie.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(4.dp)
@@ -72,13 +82,13 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
                 .height(diceLength)
         )
         Text(
-            text = rollManager.currentRoll.eventDie.name,
+            text = rollManager.currentRoll.eventDie.value.name,
             modifier = Modifier
                 .padding(4.dp)
                 .widthIn(eventTextLength)
         )
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { rollManager.handleNewRoll(Roll().randomize()) },
             modifier = Modifier.padding(4.dp)
         ) {
             Text(text = "Roll")
