@@ -1,6 +1,5 @@
 package com.example.catanResourceManager
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,10 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,40 +22,55 @@ import com.example.catanResourceManager.ui.theme.Primary
 import com.example.catanResourceManager.ui.theme.Secondary
 import com.example.catanResourceManager.ui.theme.Shapes
 import com.example.catanResourceManager.ui.theme.Typography
-import com.example.catanResourceManager.ui.theme.homepage.Resource
-import com.example.catanResourceManager.ui.theme.homepage.ResourceManager
-import com.example.catanResourceManager.ui.theme.homepage.ResourceName
 
 val cardHeight = 90.dp
 
-@Composable
-fun ResourceEditor() {
-    val numbers = mutableMapOf<Int, ResourceManager>()
-    var addState = true
+class NumberManager {
+    val numberList = mutableMapOf<Int, ResourceManager>()
 
-    for (i in 2..12) {
-        if (i != 7) {
-            numbers[i] = ResourceManager()
-        }
-    }
-    Box {
-        LazyColumn {
-            for (entry in numbers) {
-                item {
-                    NumberCard(entry.key, entry.value, addState)
-                }
+    init {
+        for (i in 2..12) {
+            if (i != 7) {
+                numberList[i] = ResourceManager()
             }
         }
-        FloatingActionButton(onClick = { addState = !addState }) {
-            Icon(Icons.Filled.Add, "Add State $addState")
+    }
+
+    fun getRollResult(roll: Roll): List<Resource> {
+        val number = roll.primaryDie.value + roll.secondaryDie.value
+        val manager = numberList[number]
+        val resourceList = mutableListOf<Resource>()
+        manager?.let {
+            for (resource in it.resourceList) {
+                if (resource.amount.value > 0) resourceList.add(resource)
+            }
+        }
+        return resourceList.toList()
+    }
+}
+
+@Preview
+@Composable
+fun ResourceEditor(numberManager: NumberManager = NumberManager()) {
+    var addState: MutableState<Boolean> = remember { mutableStateOf(false) }
+    Box {
+        LazyColumn {
+            for (entry in numberManager.numberList) {
+                item { NumberCard(entry.key, remember { entry.value }, remember { addState }) }
+            }
+        }
+        FloatingActionButton(
+            modifier = Modifier.align(alignment = Alignment.BottomEnd),
+            onClick = { addState.value = !addState.value }
+        ) {
+            Icon(if (addState.value) Icons.Filled.Add else Icons.Filled.Delete, "Add State ${addState.value}")
         }
     }
 }
 
 @Preview
 @Composable
-fun NumberCard(number: Int = 0, resourceManager: ResourceManager = ResourceManager(), add: Boolean = false) {
-    resourceManager.modifySupply(ResourceName.BRICK, 10)
+fun NumberCard(number: Int = 0, resourceManager: ResourceManager = remember { ResourceManager() }, add: MutableState<Boolean> = remember { mutableStateOf(false) }) {
     Card(
         shape = Shapes.medium,
         backgroundColor = Secondary,
@@ -72,7 +86,7 @@ fun NumberCard(number: Int = 0, resourceManager: ResourceManager = ResourceManag
                 .wrapContentHeight(Alignment.CenterVertically)
         ) {
             NumberHeader(number = number)
-            ResourceListView(resourceManager, add)
+            ResourceListView(remember { resourceManager }, remember { add })
         }
     }
 }
@@ -89,15 +103,13 @@ fun NumberHeader(number: Int) {
 }
 
 @Composable
-fun ResourceListView(resourceManager: ResourceManager = ResourceManager(), add: Boolean) {
+fun ResourceListView(resourceManager: ResourceManager = ResourceManager(), add: MutableState<Boolean>) {
     var editVisibility by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .clickable {
                 editVisibility = !editVisibility
-                Toast.makeText(context, "Clicked!", Toast.LENGTH_SHORT).show()
             }
     ) {
         LazyRow (
@@ -105,11 +117,9 @@ fun ResourceListView(resourceManager: ResourceManager = ResourceManager(), add: 
                 .wrapContentWidth(align = Alignment.Start)
                 .weight(1f)
         ) {
-            for (resource in resourceManager.map.entries) {
-                if (resource.value != 0) {
-                    item {
-                        ResourceView(Resource(resource.key), resourceManager, add)
-                    }
+            for (resource in resourceManager.resourceList) {
+                item {
+                    ResourceView(resource, remember { resourceManager }, remember { add })
                 }
             }
         }
@@ -129,23 +139,20 @@ fun ResourceListView(resourceManager: ResourceManager = ResourceManager(), add: 
 }
 
 @Composable
-fun ResourceView(resource: Resource, resourceManager: ResourceManager, add: Boolean) {
+fun ResourceView(resource: Resource, resourceManager: ResourceManager, add: MutableState<Boolean>) {
     val iconSize = 80.dp
     Box(
         modifier = Modifier.clickable {
-            val currentAmount = resourceManager.map[resource.name]
-            currentAmount?.let {
-                resourceManager.map[resource.name] = if (add) it.inc() else it.dec()
-            }
+            resourceManager.modifySupply(resource.name, if (add.value) 1 else -1)
         }
     ) {
         Image(
-            painter = painterResource(id = R.drawable.brickalpha),
+            painter = painterResource(id = resource.imageResource),
             contentDescription = resource.name.toString(),
             modifier = Modifier.size(iconSize)
         )
         Text(
-            text = resourceManager.map[resource.name].toString(),
+            text = resourceManager.getResourceAmount(resource.name).toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.TopEnd)

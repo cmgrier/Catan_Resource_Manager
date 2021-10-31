@@ -10,30 +10,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.catanResourceManager.Player.PlayerManager
 import com.example.catanResourceManager.ui.theme.AppTypography
-import com.example.catanResourceManager.ui.theme.homepage.Brick
-import com.example.catanResourceManager.ui.theme.homepage.Resource
 
 @Composable
-fun HandView(modifier: Modifier) {
+fun HandView(modifier: Modifier, playerManager: PlayerManager) {
+
     Box(modifier = modifier) {
         Column() {
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                ResourceView(resource = Brick(), 1)
-                ResourceView(resource = Brick(), 2)
-                ResourceView(resource = Brick(), 5)
-                ResourceView(resource = Brick(), 10)
-                ResourceView(resource = Brick(), 15)
+                for (i in 0..4) {
+                    ResourceView(resource = playerManager.hand.resourceList[i])
+                }
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                ResourceView(resource = Brick(), 12)
-                ResourceView(resource = Brick(), 1)
-                ResourceView(resource = Brick(), 0)
+                for (i in 5..8) {
+                    ResourceView(resource = playerManager.hand.resourceList[i])
+                }
             }
         }
     }
@@ -42,25 +39,31 @@ fun HandView(modifier: Modifier) {
 @Preview
 @Composable
 fun TestHandView() {
-    HandView(modifier = Modifier)
+    HandView(modifier = Modifier, PlayerManager())
 }
 
 @Composable
-fun ResourceView(resource: Resource, amount: Int) {
+fun ResourceView(resource: Resource) {
     val size = 120.dp
     val width = 48.dp
     Box(
-        modifier = Modifier.size(size).padding(4.dp)
+        modifier = Modifier
+            .size(size)
+            .padding(4.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.brickalpha),
+            painter = painterResource(id = resource.imageResource),
             contentDescription = resource.name.toString()
         )
         Text(
-            text = amount.toString(),
+            text = resource.amount.value.toString(),
             style = AppTypography.h5,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding().align(Alignment.TopEnd).width(width).padding(top = 3.dp)
+            modifier = Modifier
+                .padding()
+                .align(Alignment.TopEnd)
+                .width(width)
+                .padding(top = 3.dp)
         )
     }
 }
@@ -68,5 +71,5 @@ fun ResourceView(resource: Resource, amount: Int) {
 @Preview
 @Composable
 fun TestResourceView() {
-    ResourceView(resource = Brick(), 2)
+    ResourceView(resource = Brick(2))
 }

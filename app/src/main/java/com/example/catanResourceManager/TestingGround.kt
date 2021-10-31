@@ -1,4 +1,4 @@
-package com.example.catanResourceManager.ui.theme.homepage
+package com.example.catanResourceManager
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

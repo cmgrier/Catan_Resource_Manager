@@ -1,7 +1,8 @@
-package com.example.catanResourceManager.ui.theme.homepage
+package com.example.catanResourceManager
 
-import androidx.compose.runtime.*
-import com.example.catanResourceManager.R
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+
 
 open class Resource(
     val name: ResourceName,
@@ -10,14 +11,22 @@ open class Resource(
 )
 
 class ResourceManager {
-    val resourceList = listOf<Resource>(
-        Brick().apply { amount.value = 1 }
+    val resourceList = listOf(
+        Wool(),
+        Brick(),
+        Lumber(),
+        Grain(),
+        Ore(),
+        Paper(),
+        Cloth(),
+        Coin(),
+        Gold()
     )
 
     fun modifySupply(resourceName: ResourceName, amount: Int) {
         resourceList.first { it.name == resourceName }.apply {
             val total = amount + this.amount.value
-            if (total > 0) this.amount.value = total
+            if (total >= 0) this.amount.value = total
         }
     }
 
@@ -28,18 +37,62 @@ class ResourceManager {
     fun getResourceAmount(resourceName: ResourceName): Int {
         return resourceList.first { it.name == resourceName }.amount.value
     }
- }
-
-fun MutableMap<ResourceName, Int>.merge(another: MutableMap<ResourceName, Int>) = another.forEach { (name, amount) ->
-    val newAmount = amount + (this[name] ?: 0)
-    this[name] = if (newAmount >= 0) newAmount else 0
 }
-
-class Brick: Resource(
-    ResourceName.BRICK,
-    imageResource = R.drawable.catan_logo_brick
-)
 
 enum class ResourceName {
     LUMBER, WOOL, GRAIN, BRICK, ORE, PAPER, CLOTH, COIN, GOLD
 }
+
+class Brick(amount: Int = 0): Resource(
+    name = ResourceName.BRICK,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_brick
+)
+
+class Wool(amount: Int = 0): Resource(
+    name = ResourceName.WOOL,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_sheep
+)
+
+class Lumber(amount: Int = 0): Resource(
+    name = ResourceName.LUMBER,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_wood
+)
+
+class Grain(amount: Int = 0): Resource(
+    name = ResourceName.GRAIN,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_wheat
+)
+
+class Ore(amount: Int = 0): Resource(
+    name = ResourceName.ORE,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_rock
+)
+
+class Paper(amount: Int = 0): Resource(
+    name = ResourceName.PAPER,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_paper
+)
+
+class Cloth(amount: Int = 0): Resource(
+    name = ResourceName.CLOTH,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_cloth
+)
+
+class Coin(amount: Int = 0): Resource(
+    name = ResourceName.COIN,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_coin
+)
+
+class Gold(amount: Int = 0): Resource(
+    name = ResourceName.GOLD,
+    amount = mutableStateOf(amount),
+    imageResource = R.drawable.catan_logo_coin
+)
