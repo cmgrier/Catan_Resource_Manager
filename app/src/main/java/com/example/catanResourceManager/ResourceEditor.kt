@@ -14,14 +14,13 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.catanResourceManager.ui.theme.Primary
-import com.example.catanResourceManager.ui.theme.Secondary
-import com.example.catanResourceManager.ui.theme.Shapes
-import com.example.catanResourceManager.ui.theme.Typography
+import com.example.catanResourceManager.ui.theme.*
+import com.example.catanResourceManager.ui.theme.Colors
 
 val cardHeight = 90.dp
 
@@ -52,18 +51,22 @@ class NumberManager {
 @Preview
 @Composable
 fun ResourceEditor(numberManager: NumberManager = NumberManager()) {
-    var addState: MutableState<Boolean> = remember { mutableStateOf(false) }
-    Box {
-        LazyColumn {
+    val addState: MutableState<Boolean> = remember { mutableStateOf(false) }
+    Box(Modifier.background(Color.Transparent)) {
+        LazyColumn(Modifier.background(Color.Transparent)) {
             for (entry in numberManager.numberList) {
                 item { NumberCard(entry.key, remember { entry.value }, remember { addState }) }
             }
         }
         FloatingActionButton(
             modifier = Modifier.align(alignment = Alignment.BottomEnd),
-            onClick = { addState.value = !addState.value }
+            onClick = { addState.value = !addState.value },
+            backgroundColor = Colors.BaseAlternate.color
         ) {
-            Icon(if (addState.value) Icons.Filled.Add else Icons.Filled.Delete, "Add State ${addState.value}")
+            Text(
+                text = if (addState.value) "+" else "-",
+                style = AppTypography.h3
+            )
         }
     }
 }
@@ -73,7 +76,7 @@ fun ResourceEditor(numberManager: NumberManager = NumberManager()) {
 fun NumberCard(number: Int = 0, resourceManager: ResourceManager = remember { ResourceManager() }, add: MutableState<Boolean> = remember { mutableStateOf(false) }) {
     Card(
         shape = Shapes.medium,
-        backgroundColor = Secondary,
+        backgroundColor = Colors.Base.color,
         elevation = 4.dp,
         modifier = Modifier
             .heightIn(min = cardHeight)
@@ -95,9 +98,10 @@ fun NumberCard(number: Int = 0, resourceManager: ResourceManager = remember { Re
 fun NumberHeader(number: Int) {
     Text(
         text = number.toString(),
-        style = Typography.h2,
+        style = AppTypography.h2,
         modifier = Modifier
             .heightIn(max = cardHeight)
+            .padding(12.dp)
     )
 
 }
@@ -154,6 +158,7 @@ fun ResourceView(resource: Resource, resourceManager: ResourceManager, add: Muta
         Text(
             text = resourceManager.getResourceAmount(resource.name).toString(),
             textAlign = TextAlign.Center,
+            style = AppTypography.body1,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .width(30.dp)
