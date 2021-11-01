@@ -4,7 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -15,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.catanResourceManager.ui.theme.AppTypography
+import com.example.catanResourceManager.ui.theme.Colors
 import kotlin.random.Random
 
 class RollManager(private val listenerList: MutableList<RollListener>) {
@@ -39,9 +43,14 @@ class Roll(
     val eventDie: MutableState<EventDieResult> = mutableStateOf(EventDieResult.BARBARIAN)
 ) {
     fun randomize(): Roll {
-        primaryDie.value = Random.nextInt(5)
-        secondaryDie.value = Random.nextInt(5)
-        eventDie.value = EventDieResult.values()[Random.nextInt(EventDieResult.values().size)]
+        primaryDie.value = Random.nextInt(1, 7)
+        secondaryDie.value = Random.nextInt(1, 7)
+        eventDie.value = when (Random.nextInt(1, 7)) {
+            1 -> EventDieResult.BLUE
+            2 -> EventDieResult.GREEN
+            3 -> EventDieResult.YELLOW
+            else -> EventDieResult.BARBARIAN
+        }
         return this
     }
 }
@@ -53,26 +62,30 @@ enum class EventDieResult() {
 @Composable
 fun DiceView(rollManager: RollManager, modifier: Modifier) {
     val diceLength = 18.dp
-    val eventTextLength = 90.dp
+    val eventTextLength = 70.dp
     Row(
         modifier = modifier
-            .padding()
-            .background(Color.White),
+            .padding(10.dp)
+            .background(Colors.Base.color, shape = RoundedCornerShape(10)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = rollManager.currentRoll.primaryDie.value.toString(),
             textAlign = TextAlign.Center,
+            style = AppTypography.body1,
             modifier = Modifier
                 .padding(4.dp)
                 .border(BorderStroke(1.dp, Color.Black))
+                .background(Color.White)
                 .padding(4.dp)
                 .width(diceLength)
                 .height(diceLength)
+
         )
         Text(
             text = rollManager.currentRoll.secondaryDie.value.toString(),
             textAlign = TextAlign.Center,
+            style = AppTypography.body1,
             modifier = Modifier
                 .padding(4.dp)
                 .border(BorderStroke(1.dp, Color.Black))
@@ -83,21 +96,30 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
         )
         Text(
             text = rollManager.currentRoll.eventDie.value.name,
+            style = AppTypography.body1,
             modifier = Modifier
                 .padding(4.dp)
                 .widthIn(eventTextLength)
         )
         Button(
             onClick = { rollManager.handleNewRoll(Roll().randomize()) },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.Primary.color),
             modifier = Modifier.padding(4.dp)
         ) {
-            Text(text = "Roll")
+            Text(
+                text = "Roll",
+                style = AppTypography.body1
+            )
         }
         Button(
             onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.Primary.color),
             modifier = Modifier.padding(4.dp)
         ) {
-            Text(text = "Edit")
+            Text(
+                text = "Edit",
+                style = AppTypography.body1
+            )
         }
 
     }

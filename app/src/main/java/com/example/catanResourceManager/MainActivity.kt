@@ -9,8 +9,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.example.catanResourceManager.Player.PlayerManager
 import com.example.catanResourceManager.ui.theme.CatanResourceManagerTheme
+import com.example.catanResourceManager.ui.theme.Colors
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +33,9 @@ fun MainApp() {
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = { ResourceEditor(playerManager.numberManager) },
+        drawerBackgroundColor = Color.Transparent,
         content = { FrontPage(playerManager) },
+        backgroundColor = Colors.BaseAlternate.color,
         bottomBar = {  }
     )
 }

@@ -11,3 +11,11 @@ val Teal200 = Color(0xFF03DAC5)
 val Primary = Color.Gray
 val Secondary = Color.LightGray
 val Base = Color.White
+
+enum class Colors(val color: Color) {
+    Primary(Color(0xff78f569)),
+    Secondary(Color(0xffff9857)),
+    Tertiary(Color(0xff57beff)),
+    Base(Color(0xffec57ff)),
+    BaseAlternate(Color(0xffffb689))
+}
