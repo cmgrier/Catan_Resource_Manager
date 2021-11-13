@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -18,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.catanResourceManager.ui.theme.AppTypography
-import com.example.catanResourceManager.ui.theme.Colors
 import kotlin.random.Random
 
 class RollManager(private val listenerList: MutableList<RollListener>) {
@@ -66,7 +66,7 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
     Row(
         modifier = modifier
             .padding(10.dp)
-            .background(Colors.Base.color, shape = RoundedCornerShape(10)),
+            .background(MaterialTheme.colors.background, shape = RoundedCornerShape(10)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -103,7 +103,7 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
         )
         Button(
             onClick = { rollManager.handleNewRoll(Roll().randomize()) },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.Primary.color),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier.padding(4.dp)
         ) {
             Text(
@@ -113,7 +113,7 @@ fun DiceView(rollManager: RollManager, modifier: Modifier) {
         }
         Button(
             onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.Primary.color),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier.padding(4.dp)
         ) {
             Text(

@@ -2,15 +2,14 @@ package com.example.catanResourceManager
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.catanResourceManager.ui.theme.*
-import com.example.catanResourceManager.ui.theme.Colors
 
 val cardHeight = 90.dp
 
@@ -59,9 +57,11 @@ fun ResourceEditor(numberManager: NumberManager = NumberManager()) {
             }
         }
         FloatingActionButton(
-            modifier = Modifier.align(alignment = Alignment.BottomEnd),
+            modifier = Modifier
+                .border(2.dp, MaterialTheme.colors.onSurface, CircleShape)
+                .align(alignment = Alignment.BottomEnd),
             onClick = { addState.value = !addState.value },
-            backgroundColor = Colors.BaseAlternate.color
+            backgroundColor = MaterialTheme.colors.background
         ) {
             Text(
                 text = if (addState.value) "+" else "-",
@@ -76,7 +76,7 @@ fun ResourceEditor(numberManager: NumberManager = NumberManager()) {
 fun NumberCard(number: Int = 0, resourceManager: ResourceManager = remember { ResourceManager() }, add: MutableState<Boolean> = remember { mutableStateOf(false) }) {
     Card(
         shape = Shapes.medium,
-        backgroundColor = Colors.Base.color,
+        backgroundColor = MaterialTheme.colors.primarySurface,
         elevation = 4.dp,
         modifier = Modifier
             .heightIn(min = cardHeight)
@@ -134,7 +134,7 @@ fun ResourceListView(resourceManager: ResourceManager = ResourceManager(), add: 
                 modifier = Modifier
                     .wrapContentWidth(Alignment.End)
                     .height(cardHeight)
-                    .background(Primary)
+                    .background(MaterialTheme.colors.primary)
             ) {
                 Text(text = "Edit")
             }
@@ -157,6 +157,7 @@ fun ResourceView(resource: Resource, resourceManager: ResourceManager, add: Muta
         )
         Text(
             text = resourceManager.getResourceAmount(resource.name).toString(),
+            color = Color.Black,
             textAlign = TextAlign.Center,
             style = AppTypography.body1,
             modifier = Modifier

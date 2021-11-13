@@ -1,7 +1,10 @@
 package com.example.catanResourceManager
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.catanResourceManager.Player.PlayerManager
 import com.example.catanResourceManager.ui.theme.AppTypography
+import com.example.catanResourceManager.ui.theme.Shapes
 
 @Composable
 fun HandView(modifier: Modifier, playerManager: PlayerManager) {
@@ -49,11 +53,14 @@ fun ResourceView(resource: Resource) {
     Box(
         modifier = Modifier
             .size(size)
-            .padding(4.dp)
+            .padding(2.dp)
+            .background(MaterialTheme.colors.primary, shape = CircleShape)
     ) {
         Image(
             painter = painterResource(id = resource.imageResource),
-            contentDescription = resource.name.toString()
+            contentDescription = resource.name.toString(),
+            modifier = Modifier
+                .padding(start = 3.dp, bottom = 3.dp)
         )
         Text(
             text = resource.amount.value.toString(),
@@ -63,7 +70,7 @@ fun ResourceView(resource: Resource) {
                 .padding()
                 .align(Alignment.TopEnd)
                 .width(width)
-                .padding(top = 3.dp)
+                .padding(top = 2.dp, start = 2.dp)
         )
     }
 }
