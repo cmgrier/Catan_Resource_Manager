@@ -1,4 +1,4 @@
-package com.example.catanResourceManager
+package com.app.catanResourceManager
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
