@@ -1,4 +1,4 @@
-package com.example.catanResourceManager
+package com.app.catanResourceManager
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedTextField

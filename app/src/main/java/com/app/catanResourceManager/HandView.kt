@@ -1,4 +1,4 @@
-package com.example.catanResourceManager
+package com.app.catanResourceManager
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,9 +13,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.catanResourceManager.Player.PlayerManager
-import com.example.catanResourceManager.ui.theme.AppTypography
-import com.example.catanResourceManager.ui.theme.Shapes
+import com.app.catanResourceManager.Player.PlayerManager
+import com.app.catanResourceManager.ui.theme.AppTypography
+import com.app.catanResourceManager.ui.theme.Shapes
 
 @Composable
 fun HandView(modifier: Modifier, playerManager: PlayerManager) {

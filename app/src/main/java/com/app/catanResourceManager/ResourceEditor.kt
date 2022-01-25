@@ -1,4 +1,4 @@
-package com.example.catanResourceManager
+package com.app.catanResourceManager
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.app.catanResourceManager.ui.theme.AppTypography
+import com.app.catanResourceManager.ui.theme.Shapes
 import com.example.catanResourceManager.ui.theme.*
 
 val cardHeight = 90.dp

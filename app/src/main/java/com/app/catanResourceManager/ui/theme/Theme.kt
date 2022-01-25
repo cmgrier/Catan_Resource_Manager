@@ -5,8 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import com.example.catanResourceManager.ui.theme.AppTypography
-import com.example.catanResourceManager.ui.theme.Shapes
+import com.app.catanResourceManager.ui.theme.AppTypography
+import com.app.catanResourceManager.ui.theme.Shapes
 
 private val LightThemeColors = lightColors(
 

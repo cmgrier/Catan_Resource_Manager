@@ -1,4 +1,4 @@
-package com.example.catanResourceManager.ui.theme
+package com.app.catanResourceManager.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

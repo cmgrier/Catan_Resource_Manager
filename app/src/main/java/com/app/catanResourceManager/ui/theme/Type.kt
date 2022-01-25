@@ -1,4 +1,4 @@
-package com.example.catanResourceManager.ui.theme
+package com.app.catanResourceManager.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

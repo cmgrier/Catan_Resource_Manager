@@ -1,4 +1,4 @@
-package com.example.catanResourceManager
+package com.app.catanResourceManager
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.catanResourceManager.Player.PlayerManager
+import com.app.catanResourceManager.Player.PlayerManager
 import com.example.compose.CatanResourceManagerTheme
 import java.util.concurrent.atomic.AtomicLongFieldUpdater
 
