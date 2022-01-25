@@ -1,7 +1,6 @@
 package com.app.catanResourceManager.Player
 
 import com.app.catanResourceManager.*
-import com.example.catanResourceManager.*
 
 class PlayerManager(val numberManager: NumberManager = NumberManager()): RollListener {
     val hand = ResourceManager()

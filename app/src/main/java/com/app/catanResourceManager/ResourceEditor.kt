@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.app.catanResourceManager.ui.theme.AppTypography
 import com.app.catanResourceManager.ui.theme.Shapes
-import com.example.catanResourceManager.ui.theme.*
 
 val cardHeight = 90.dp
 

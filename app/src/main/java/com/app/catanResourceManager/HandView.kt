@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.app.catanResourceManager.Player.PlayerManager
 import com.app.catanResourceManager.ui.theme.AppTypography
-import com.app.catanResourceManager.ui.theme.Shapes
 
 @Composable
 fun HandView(modifier: Modifier, playerManager: PlayerManager) {

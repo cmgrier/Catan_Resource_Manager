@@ -2,7 +2,6 @@ package com.app.catanResourceManager
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.example.catanResourceManager.R
 
 open class Construct(
     val name: ConstructName,

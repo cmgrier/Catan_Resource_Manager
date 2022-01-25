@@ -11,8 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.app.catanResourceManager.Player.PlayerManager
-import com.example.compose.CatanResourceManagerTheme
-import java.util.concurrent.atomic.AtomicLongFieldUpdater
+import com.app.catanResourceManager.ui.theme.CatanResourceManagerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
