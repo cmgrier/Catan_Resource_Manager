@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.catanResourceManager.Player.PlayerManager
 import com.example.compose.CatanResourceManagerTheme
+import java.util.concurrent.atomic.AtomicLongFieldUpdater
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +30,14 @@ class MainActivity : ComponentActivity() {
 fun MainApp() {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val playerManager = PlayerManager()
+
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = { ResourceEditor(playerManager.numberManager) },
         drawerBackgroundColor = Color.Transparent,
         content = { FrontPage(playerManager) },
         backgroundColor = MaterialTheme.colors.background,
-        bottomBar = {  }
+        bottomBar = { Text(text = "TEST") }
     )
 }
 
@@ -46,5 +48,6 @@ fun FrontPage(playerManager: PlayerManager) {
     ) {
         DiceView(rollManager = RollManager(mutableListOf(playerManager)), modifier = Modifier.align(Alignment.TopStart))
         HandView(modifier = Modifier.align(Alignment.BottomStart), playerManager)
+        MarketView(modifier = Modifier.align(Alignment.BottomEnd), playerManager = playerManager)
     }
 }

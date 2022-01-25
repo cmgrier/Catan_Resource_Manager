@@ -48,8 +48,7 @@ fun TestHandView() {
 
 @Composable
 fun ResourceView(resource: Resource) {
-    val size = 120.dp
-    val width = 48.dp
+    val size = 90.dp
     Box(
         modifier = Modifier
             .size(size)
@@ -64,13 +63,11 @@ fun ResourceView(resource: Resource) {
         )
         Text(
             text = resource.amount.value.toString(),
-            style = AppTypography.h5,
+            style = AppTypography.h6,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding()
                 .align(Alignment.TopEnd)
-                .width(width)
-                .padding(top = 2.dp, start = 2.dp)
+                .padding(top = 0.dp, end = 12.dp)
         )
     }
 }
