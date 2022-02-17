@@ -94,5 +94,5 @@ class Coin(amount: Int = 0): Resource(
 class Gold(amount: Int = 0): Resource(
     name = ResourceName.GOLD,
     amount = mutableStateOf(amount),
-    imageResource = R.drawable.catan_logo_coin
+    imageResource = R.drawable.catan_logo_gold
 )

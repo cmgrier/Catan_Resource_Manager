@@ -5,11 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.app.catanResourceManager.Player.PlayerManager
 import com.app.catanResourceManager.ui.theme.CatanResourceManagerTheme
 
@@ -36,7 +38,7 @@ fun MainApp() {
         drawerBackgroundColor = Color.Transparent,
         content = { FrontPage(playerManager) },
         backgroundColor = MaterialTheme.colors.background,
-        bottomBar = { Text(text = "TEST") }
+        bottomBar = { }
     )
 }
 
@@ -46,7 +48,18 @@ fun FrontPage(playerManager: PlayerManager) {
         modifier = Modifier.fillMaxSize()
     ) {
         DiceView(rollManager = RollManager(mutableListOf(playerManager)), modifier = Modifier.align(Alignment.TopStart))
-        HandView(modifier = Modifier.align(Alignment.BottomStart), playerManager)
-        MarketView(modifier = Modifier.align(Alignment.BottomEnd), playerManager = playerManager)
+        HandView(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(12.dp),
+            playerManager
+        )
+        MarketView(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(12.dp),
+            playerManager = playerManager
+        )
+
     }
 }
